@@ -1,4 +1,4 @@
-# midway-admin 权限管理脚手架
+# ALLUKA SERVE
 
 ## 技术栈
 
