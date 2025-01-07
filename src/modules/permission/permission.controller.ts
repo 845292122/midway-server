@@ -4,7 +4,7 @@ import { PermissionService } from './permission.service'
 import { IPage } from '../../common/interface'
 import { ParseIntPipe } from '@midwayjs/validate'
 import { PermissionDTO } from './permission.dto'
-import { BizError } from '../../error/biz.error'
+import { BizError } from '../../common/error'
 
 /**
  * 权限控制器

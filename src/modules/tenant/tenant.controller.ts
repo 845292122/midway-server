@@ -3,7 +3,7 @@ import { TenantService } from './tenant.service'
 import { IPage } from '../../common/interface'
 import { ParseIntPipe } from '@midwayjs/validate'
 import { TenantDTO } from './tenant.dto'
-import { BizError } from '../../error/biz.error'
+import { BizError } from '../../common/error'
 
 /**
  * 租户控制器

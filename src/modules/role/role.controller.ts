@@ -4,7 +4,7 @@ import { RoleService } from './role.service'
 import { IPage } from '../../common/interface'
 import { ParseIntPipe } from '@midwayjs/validate'
 import { RoleDTO } from './role.dto'
-import { BizError } from '../../error/biz.error'
+import { BizError } from '../../common/error'
 
 /**
  * 角色控制器

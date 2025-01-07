@@ -3,7 +3,7 @@ import { IPage } from '../../common/interface'
 import { Prisma } from '@prisma/client'
 import { prisma } from '../../common/prisma'
 import { UserDTO } from './user.dto'
-import { BizError } from '../../error/biz.error'
+import { BizError } from '../../common/error'
 
 @Provide()
 export class UserService {

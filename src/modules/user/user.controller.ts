@@ -4,7 +4,7 @@ import { UserService } from './user.service'
 import { IPage } from '../../common/interface'
 import { ParseIntPipe } from '@midwayjs/validate'
 import { UserDTO } from './user.dto'
-import { BizError } from '../../error/biz.error'
+import { BizError } from '../../common/error'
 
 /**
  * 用户控制器
