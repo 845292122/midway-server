@@ -11,3 +11,6 @@ run/
 *.un~
 .tsbuildinfo
 .tsbuildinfo.*
+
+pnpm-lock.yaml
+prisma/migrations/
