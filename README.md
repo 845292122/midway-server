@@ -1,10 +1,10 @@
-# ALLUKA SERVE
+# Midway Server
 
 ## 技术栈
 
-- midwayjs
+- midway.js
 - mysql
-- prisma
+- typeorm
 
 ## 权限设计
 
