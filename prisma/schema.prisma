@@ -5,6 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 // 常用命令
+// npx prisma init 初始化prisma
 // npx prisma format 格式化schema
 // npx prisma migrate dev --name init 初始化数据库
 // npx prisma generate  重新生成Prisma Client
@@ -18,95 +19,57 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// * 租户表
-model Tenant {
-  id             Int          @id @default(autoincrement()) @db.UnsignedInt
-  name           String?      @db.VarChar(50)
-  contact        String?      @db.VarChar(30)
-  phone          String?      @db.VarChar(20)
-  company        String?      @db.VarChar(50)
-  licenseNumber  String?      @db.VarChar(50)
-  address        String?      @db.VarChar(255)
-  remark         String?      @db.Text
-  isTrial        Int?         @default(1) @db.TinyInt
-  trialStartDate DateTime?    @default(dbgenerated("NOW()")) @db.DateTime
-  trialEndDate   DateTime?    @default(dbgenerated("NOW()")) @db.DateTime
-  startDate      DateTime?    @db.DateTime
-  endDate        DateTime?    @db.DateTime
-  accountCount   Int?         @default(5) @db.TinyInt
-  status         Int?         @default(1)
-  delFlag        Int          @default(0) @db.TinyInt
-  createdAt      DateTime     @default(dbgenerated("NOW()")) @db.Timestamp
-  updatedAt      DateTime     @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.Timestamp
-  Role           Role[]
-  Permission     Permission[]
-  User           User[]
+// * 账户表
+// type: 业务类型
+model Account {
+  id             Int       @id @default(autoincrement()) @db.UnsignedInt
+  contact        String?   @db.VarChar(30)
+  phone          String?   @db.VarChar(20)
+  password       String?   @db.VarChar(255)
+  company        String?   @db.VarChar(50)
+  licenseNumber  String?   @db.VarChar(50)
+  address        String?   @db.VarChar(255)
+  bizType        Int?      @default(1)
+  remark         String?   @db.Text
+  isAdmin        Int?      @default(1) @db.TinyInt
+  trialStartDate DateTime? @default(dbgenerated("NOW()")) @db.DateTime
+  trialEndDate   DateTime? @default(dbgenerated("NOW()")) @db.DateTime
+  startDate      DateTime? @db.DateTime
+  endDate        DateTime? @db.DateTime
+  status         Int?      @default(1)
+  delFlag        Int       @default(0) @db.TinyInt
+  createdAt      DateTime  @default(dbgenerated("NOW()")) @db.Timestamp
+  updatedAt      DateTime  @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.Timestamp
+  Perm           Perm[]
   OperLog        OperLog[]
 
-  @@index([name, company, delFlag])
-  @@map("tenant")
+  @@index([contact, company, delFlag])
+  @@map("account")
 }
 
-// * 角色表
-model Role {
+// * 权限表
+model Perm {
   id        Int      @id @default(autoincrement()) @db.UnsignedInt
-  tenantId  Int?     @db.UnsignedInt
-  tenant    Tenant?  @relation(fields: [tenantId], references: [id])
-  name      String?  @db.VarChar(100)
+  pId       Int?     @db.UnsignedInt
+  accountId Int?     @db.UnsignedInt
+  account   Account? @relation(fields: [accountId], references: [id])
+  key       String?  @db.VarChar(255)
   status    Int?     @default(1)
   delFlag   Int      @default(0) @db.TinyInt
   createBy  String?
   updateBy  String?
   createdAt DateTime @default(dbgenerated("NOW()")) @db.Timestamp
   updatedAt DateTime @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.Timestamp
-  User      User[]
 
-  @@index([tenantId, name, status, delFlag])
-  @@map("role")
-}
-
-// * 权限表
-model Permission {
-  id         Int      @id @default(autoincrement()) @db.UnsignedInt
-  parentId   Int?     @db.UnsignedInt
-  tenantId   Int?     @db.UnsignedInt
-  tenant     Tenant?  @relation(fields: [tenantId], references: [id])
-  permission String?  @db.VarChar(255)
-  status     Int?     @default(1)
-  delFlag    Int      @default(0) @db.TinyInt
-  createBy   String?
-  updateBy   String?
-  createdAt  DateTime @default(dbgenerated("NOW()")) @db.Timestamp
-  updatedAt  DateTime @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.Timestamp
-
-  @@index([parentId, tenantId, permission])
-  @@map("permission")
-}
-
-// * 用户表
-model User {
-  id        Int      @id @default(autoincrement()) @db.UnsignedInt
-  tenantId  Int?     @db.UnsignedInt
-  tenant    Tenant?  @relation(fields: [tenantId], references: [id])
-  roleId    Int?     @db.UnsignedInt
-  role      Role?    @relation(fields: [roleId], references: [id])
-  name      String?  @db.VarChar(50)
-  phone     String?  @db.VarChar(30)
-  password  String?  @db.VarChar(255)
-  status    Int?     @default(1)
-  delFlag   Int      @default(0) @db.TinyInt
-  createdAt DateTime @default(dbgenerated("NOW()")) @db.Timestamp
-  updatedAt DateTime @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.Timestamp
-
-  @@index([tenantId, roleId, name, phone])
-  @@map("user")
+  @@index([pId, accountId, key])
+  @@map("perm")
 }
 
 // * 操作日志
 model OperLog {
   id         BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
-  tenantId   Int?     @db.UnsignedInt
-  tenant     Tenant?  @relation(fields: [tenantId], references: [id])
+  accountId  Int?     @db.UnsignedInt
+  account    Account? @relation(fields: [accountId], references: [id])
   type       Int?     @default(0)
   method     String?
   operName   String?
@@ -117,6 +80,6 @@ model OperLog {
   operTime   DateTime @default(dbgenerated("NOW()")) @db.Timestamp
   costTime   BigInt   @db.UnsignedBigInt
 
-  @@index([tenantId, type, operName])
-  @@map("oper_log")
+  @@index([accountId, type, operName])
+  @@map("log")
 }
