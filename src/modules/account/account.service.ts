@@ -26,7 +26,7 @@ export class AccountService {
     const { pageNo, pageSize } = query
 
     const pageParam = convertPageParam(pageNo, pageSize)
-    const [records, count] = await this.accountModel.findAndCount({
+    const [records, total] = await this.accountModel.findAndCount({
       where: {
         company: company ?? undefined
       },
@@ -36,7 +36,7 @@ export class AccountService {
     return {
       pageNo,
       pageSize,
-      total: count,
+      total,
       records
     }
   }
@@ -96,7 +96,7 @@ export class AccountService {
     const exists = await this.accountModel.exists({
       where: {
         phone: account.phone,
-        id: account.id ? account.id : undefined
+        id: account.id ?? undefined
       }
     })
     if (exists) {

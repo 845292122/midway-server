@@ -12,6 +12,9 @@ export class Perm {
   @Column({ length: 64 })
   key: string
 
+  @Column()
+  description: string
+
   @Column({ type: 'tinyint', default: 1 })
   status: number
 
