@@ -1,7 +1,7 @@
 import { Rule, RuleType } from '@midwayjs/validate'
 import { BizError } from '../../common/error'
 
-export class accountDTO {
+export class AccountDTO {
   id: number
 
   @Rule(RuleType.string().required().error(new BizError('联系人不能为空')))
