@@ -24,7 +24,7 @@ export default {
         // ! 如果第一次使用，不存在表，有同步的需求可以写 true，注意会丢数据
         synchronize: true,
         logging: false,
-        entities: ['**/*.entity.ts']
+        entities: ['**/*.entity.{j,t}s']
       }
     }
   }
