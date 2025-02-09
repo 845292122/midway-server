@@ -6,6 +6,7 @@
   "dependencies": {
     "@midwayjs/bootstrap": "^3.20.0",
     "@midwayjs/core": "^3.20.0",
+    "@midwayjs/cron": "3",
     "@midwayjs/info": "^3.20.0",
     "@midwayjs/jwt": "^3.20.0",
     "@midwayjs/koa": "^3.20.0",

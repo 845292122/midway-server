@@ -11,6 +11,7 @@ import * as jwt from '@midwayjs/jwt'
 import { ResultMiddleware } from './middleware/result.middleware'
 import { JwtMiddleware } from './middleware/jwt-old.middleware'
 import * as passport from '@midwayjs/passport'
+import * as cron from '@midwayjs/cron'
 
 @Configuration({
   imports: [
@@ -19,6 +20,7 @@ import * as passport from '@midwayjs/passport'
     orm,
     validate,
     passport,
+    cron,
     {
       component: info,
       enabledEnvironment: ['local']
