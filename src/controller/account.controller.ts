@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Inject, Param, Post, Query } from '@midwayjs/core'
-import { AccountService } from './account.service'
-import { IPage } from '../../common/interface'
+import { AccountService } from '../service/account.service'
+import { IPage } from '../common/interface'
 import { ParseIntPipe } from '@midwayjs/validate'
-import { AccountDTO } from './account.dto'
+import { AccountDTO } from '../dto/account.dto'
 
 @Controller('/account')
 export class AccountController {

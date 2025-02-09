@@ -1,9 +1,9 @@
 import { Provide } from '@midwayjs/core'
 import { Repository } from 'typeorm'
-import { Perm } from './perm.entity'
+import { Perm } from '../entity/perm.entity'
 import { InjectEntityModel } from '@midwayjs/typeorm'
-import { PermDTO } from './perm.dto'
-import { BizError } from '../../common/error'
+import { PermDTO } from '../dto/perm.dto'
+import { BizError } from '../common/error'
 
 @Provide()
 export class PermService {

@@ -8,7 +8,7 @@
 
 ## TODO
 
-- [ ] passport 认证
+- [x] passport 认证
 - [ ] 缓存操作
 - [ ] 定时任务
 - [ ] 操作日志

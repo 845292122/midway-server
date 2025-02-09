@@ -9,7 +9,8 @@ import { BizErrorFilter } from './filter/biz.filter'
 import { DefaultErrorFilter } from './filter/default.filter'
 import * as jwt from '@midwayjs/jwt'
 import { ResultMiddleware } from './middleware/result.middleware'
-import { JwtMiddleware } from './middleware/jwt.middleware'
+import { JwtMiddleware } from './middleware/jwt-old.middleware'
+import * as passport from '@midwayjs/passport'
 
 @Configuration({
   imports: [
@@ -17,6 +18,7 @@ import { JwtMiddleware } from './middleware/jwt.middleware'
     jwt,
     orm,
     validate,
+    passport,
     {
       component: info,
       enabledEnvironment: ['local']

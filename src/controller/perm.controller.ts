@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Inject, Param, Post } from '@midwayjs/core'
-import { PermService } from './perm.service'
-import { PermDTO } from './perm.dto'
+import { PermService } from '../service/perm.service'
+import { PermDTO } from '../dto/perm.dto'
 import { ParseIntPipe } from '@midwayjs/validate'
-import { BizError } from '../../common/error'
+import { BizError } from '../common/error'
 
 @Controller('/perm')
 export class PermController {

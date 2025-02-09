@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
-import { Account } from '../account/account.entity'
+import { Account } from './account.entity'
 
 @Entity('perm')
 export class Perm {
