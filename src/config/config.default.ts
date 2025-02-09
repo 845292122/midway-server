@@ -12,6 +12,13 @@ export default {
       expiresIn: '1d'
     }
   },
+  cacheManager: {
+    clients: {
+      default: {
+        store: 'memory'
+      }
+    }
+  },
   typeorm: {
     dataSource: {
       default: {
