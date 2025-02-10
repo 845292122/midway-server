@@ -3,6 +3,7 @@ import { BaseEntity } from './base.entity'
 
 /**
  * 租户实体
+ * TODO 配置映射关系 -> perm、user
  */
 @Entity('tenant')
 export class TenantEntity extends BaseEntity {
