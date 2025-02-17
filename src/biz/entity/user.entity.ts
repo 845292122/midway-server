@@ -1,5 +1,7 @@
-import { Column, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { BaseEntity } from './base.entity'
+import { TenantEntity } from './tenant.entity'
+import { PermEntity } from './perm.entity'
 
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ unsigned: true, comment: '主键' })
@@ -40,4 +42,10 @@ export class UserEntity extends BaseEntity {
 
   @Column({ length: 255, comment: '备注' })
   remark: string
+
+  @ManyToOne(() => TenantEntity, tenant => tenant.users)
+  tenant: TenantEntity
+
+  @OneToMany(() => PermEntity, perm => perm.user)
+  perms: PermEntity[]
 }

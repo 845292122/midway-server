@@ -1,10 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { BaseEntity } from './base.entity'
+import { UserEntity } from './user.entity'
 
-/**
- * 租户实体
- * TODO 配置映射关系 -> perm、user
- */
 @Entity('tenant')
 export class TenantEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ unsigned: true, comment: '主键' })
@@ -52,6 +49,9 @@ export class TenantEntity extends BaseEntity {
   @Column({ type: 'tinyint', comment: '状态: 未使用; 试用中; 试用结束; 试用中; 到期;' })
   status: number
 
-  @Column({ type: 'tinyint', width: 1, comment: '是否是VIP' })
+  @Column({ type: 'tinyint', width: 1, comment: '是否是premium租户' })
   isPremium: boolean
+
+  @OneToMany(() => UserEntity, user => user.tenant)
+  users: UserEntity[]
 }

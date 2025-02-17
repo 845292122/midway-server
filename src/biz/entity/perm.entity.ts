@@ -1,22 +1,22 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
-import { Account } from './account.entity'
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { UserEntity } from './user.entity'
 
 @Entity('perm')
-export class Perm {
+export class PermEntity {
   @PrimaryGeneratedColumn({ unsigned: true })
   id: number
 
   @Column({ unsigned: true })
-  pId: number
+  ownerId: number
+
+  @Column({ type: 'tinyint' })
+  ownerType: number
+
+  @Column()
+  perm: string
 
   @Column({ length: 64 })
   key: string
-
-  @Column()
-  description: string
-
-  @Column({ type: 'tinyint', default: 1 })
-  status: number
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date
@@ -24,9 +24,6 @@ export class Perm {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date
 
-  @DeleteDateColumn()
-  deletedAt?: Date
-
-  @ManyToOne(type => Account, account => account.perms)
-  account: Account
+  @ManyToOne(() => UserEntity, user => user.perms)
+  user: UserEntity
 }
