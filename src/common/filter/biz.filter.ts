@@ -1,6 +1,6 @@
 import { Catch, MidwayHttpError } from '@midwayjs/core'
 import { Context } from '@midwayjs/koa'
-import { BizError } from '../common/error'
+import { BizError } from '../core/error'
 
 @Catch(BizError)
 export class BizErrorFilter {

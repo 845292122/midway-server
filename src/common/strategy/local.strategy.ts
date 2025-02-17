@@ -2,7 +2,7 @@ import { CustomStrategy, PassportStrategy } from '@midwayjs/passport'
 import { Strategy, IStrategyOptions } from 'passport-local'
 import { Repository } from 'typeorm'
 import { InjectEntityModel } from '@midwayjs/typeorm'
-import { Account } from '../entity/account.entity'
+import { Account } from '../../biz/entity/account.entity'
 import * as bcrypt from 'bcrypt'
 
 @CustomStrategy()

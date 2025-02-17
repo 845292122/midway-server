@@ -1,17 +1,17 @@
-import { Configuration, App, ILifeCycle } from '@midwayjs/core'
+import { join } from 'path'
 import * as koa from '@midwayjs/koa'
 import * as validate from '@midwayjs/validate'
 import * as info from '@midwayjs/info'
 import * as orm from '@midwayjs/typeorm'
-import { join } from 'path'
-import { ReportMiddleware } from './middleware/report.middleware'
-import { BizErrorFilter } from './filter/biz.filter'
-import { DefaultErrorFilter } from './filter/default.filter'
 import * as jwt from '@midwayjs/jwt'
-import { ResultMiddleware } from './middleware/result.middleware'
 import * as passport from '@midwayjs/passport'
 import * as cron from '@midwayjs/cron'
 import * as cacheManager from '@midwayjs/cache-manager'
+import { Configuration, App, ILifeCycle } from '@midwayjs/core'
+import { ReportMiddleware } from './common/middleware/report.middleware'
+import { BizErrorFilter } from './common/filter/biz.filter'
+import { DefaultErrorFilter } from './common/filter/default.filter'
+import { ResultMiddleware } from './common/middleware/result.middleware'
 
 @Configuration({
   imports: [

@@ -1,5 +1,5 @@
 import { Rule, RuleType } from '@midwayjs/validate'
-import { BizError } from '../common/error'
+import { BizError } from '../../common/core/error'
 
 export class PermDTO {
   id: number

@@ -1,11 +1,11 @@
 import { Provide } from '@midwayjs/core'
-import { IPage } from '../common/interface'
+import { IPage } from '../../common/core/interface'
 import { Repository } from 'typeorm'
 import { Account } from '../entity/account.entity'
 import { InjectEntityModel } from '@midwayjs/typeorm'
-import { convertPageParam } from '../utils'
+import { convertPageParam } from '../../common/utils'
 import { AccountDTO } from '../dto/account.dto'
-import { BizError } from '../common/error'
+import { BizError } from '../../common/core/error'
 
 @Provide()
 export class AccountService {
