@@ -16,20 +16,21 @@
 - mysql
 - typeorm
 
-## src 文件夹说明
+## src 目录说明
 
 - common 公共模块目录
+  - filter 过滤器目录
+  - guard 守卫目录
+  - middleware 中间件目录
+  - strategy 策略目录
+  - utils 工具目录
+- biz 业务模块目录
+  - controller 控制器目录
+  - entity 数据库实体目录
+  - service 服务目录
+  - dto 数据传输对象目录
 - config 配置目录
-- controller 控制器目录
-- dto 数据传输对象目录
-- entity 数据库实体目录
-- filter 过滤器目录
-- guard 守卫目录
 - job 定时任务目录
-- middleware 中间件目录
-- service 服务目录
-- strategy 策略目录
-- util 工具目录
 
 ## 部署
 
