@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity('oper_log')
-export class OperLog {
+export class OperLogEntity {
   @PrimaryGeneratedColumn({ type: 'bigint', unsigned: true })
   id: number
 
