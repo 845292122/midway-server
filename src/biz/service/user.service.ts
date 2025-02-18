@@ -20,8 +20,8 @@ export class UserService {
     status: number
   ): Promise<IPage<UserEntity>> {
     const { pageNo, pageSize } = pageParam
-
     const pageObj = convertPageParam(pageNo, pageSize)
+
     const [records, total] = await this.userModel.findAndCount({
       where: {
         username: username ? Like(`%${username}%`) : undefined,
