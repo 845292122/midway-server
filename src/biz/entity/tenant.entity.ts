@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
-import { BaseEntity } from './base.entity'
+import { BaseEntity } from '../../common/core/base.entity'
 import { UserEntity } from './user.entity'
 
 @Entity('tenant')

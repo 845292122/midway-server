@@ -1,5 +1,5 @@
 import { Column, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
-import { BaseEntity } from './base.entity'
+import { BaseEntity } from '../../common/core/base.entity'
 import { TenantEntity } from './tenant.entity'
 import { PermEntity } from './perm.entity'
 
