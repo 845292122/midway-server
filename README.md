@@ -23,6 +23,9 @@ TypeORM 中 save() 和 insert() 的主要区别：
 - save: 会自动执行实体的验证和保存操作
 - insert: 不会执行实体的验证操作，只会将数据插入到数据库中
 
+简单场景使用: insert/update/softDelete
+复杂场景使用: save/update/softRemove
+
 ## src 目录说明
 
 - common 公共模块目录
