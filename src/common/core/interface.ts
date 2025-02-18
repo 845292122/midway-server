@@ -1,17 +1,17 @@
 /**
  * page分页
  */
-export interface IPage {
-  pageNo: number;
-  pageSize: number;
-  total?: number;
-  records?: any;
+export interface IPage<T = any> {
+  pageNo: number
+  pageSize: number
+  total?: number
+  records?: Array<T>
 }
 
 /**
  * 认证信息
  */
 export interface ILogin {
-  phone: string;
-  password: string;
+  phone: string
+  password: string
 }

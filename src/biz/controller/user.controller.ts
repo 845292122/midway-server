@@ -13,7 +13,7 @@ export class UserController {
   async page(
     @Query('username') username: string,
     @Query('nickname') nickname: string,
-    @Query('status') status: number,
+    @Query('status', [ParseIntPipe]) status: number,
     @Query('pageNo', [ParseIntPipe]) pageNo: number,
     @Query('pageSize', [ParseIntPipe]) pageSize: number
   ): Promise<IPage> {
@@ -21,7 +21,7 @@ export class UserController {
   }
 
   @Get('/:id', { summary: '用户详情' })
-  async info(@Query('id', [ParseIntPipe]) id: number): Promise<UserDTO> {
+  async info(@Param('id', [ParseIntPipe]) id: number): Promise<UserDTO> {
     return await this.userService.queryUserInfo(id)
   }
 

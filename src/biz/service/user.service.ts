@@ -13,7 +13,12 @@ export class UserService {
   userModel: Repository<UserEntity>
 
   // * 查询用户分页
-  async queryUserPage(pageParam: IPage, username: string, nickname: string, status: number): Promise<IPage> {
+  async queryUserPage(
+    pageParam: IPage,
+    username: string,
+    nickname: string,
+    status: number
+  ): Promise<IPage<UserEntity>> {
     const { pageNo, pageSize } = pageParam
 
     const pageObj = convertPageParam(pageNo, pageSize)
@@ -50,7 +55,7 @@ export class UserService {
 
   // * 删除账户
   async removeUser(id: number) {
-    await this.userModel.softRemove({ id })
+    await this.userModel.softDelete(id)
   }
 
   // * 验证手机号是否唯一
