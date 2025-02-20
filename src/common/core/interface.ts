@@ -2,7 +2,7 @@
  * page分页
  */
 export interface IPage<T = any> {
-  pageNo: number
+  page: number
   pageSize: number
   total?: number
   records?: Array<T>

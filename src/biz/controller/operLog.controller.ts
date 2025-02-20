@@ -10,9 +10,9 @@ export class OperLogController {
 
   async page(
     @Query('operName') operName: string,
-    @Query('pageNo', [ParseIntPipe]) pageNo: number,
+    @Query('page', [ParseIntPipe]) page: number,
     @Query('pageSize', [ParseIntPipe]) pageSize: number
   ): Promise<IPage> {
-    return await this.operLogService.queryOperLogPage({ pageNo, pageSize }, operName)
+    return await this.operLogService.queryOperLogPage({ page, pageSize }, operName)
   }
 }

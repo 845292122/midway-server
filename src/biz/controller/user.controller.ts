@@ -14,10 +14,10 @@ export class UserController {
     @Query('username') username: string,
     @Query('nickname') nickname: string,
     @Query('status', [ParseIntPipe]) status: number,
-    @Query('pageNo', [ParseIntPipe]) pageNo: number,
+    @Query('page', [ParseIntPipe]) page: number,
     @Query('pageSize', [ParseIntPipe]) pageSize: number
   ): Promise<IPage> {
-    return await this.userService.queryUserPage({ pageNo, pageSize }, username, nickname, status)
+    return await this.userService.queryUserPage({ page, pageSize }, username, nickname, status)
   }
 
   @Get('/:id', { summary: '用户详情' })

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Inject, Param, Post, Query } from '@midwayjs/core'
 import { TenantService } from '../service/tenant.service'
 import { IPage } from '../../common/core/interface'
-import { ParseBoolPipe, ParseIntPipe } from '@midwayjs/validate'
+import { ParseIntPipe } from '@midwayjs/validate'
 import { TenantDTO } from '../dto/tenant.dto'
 
 @Controller('/tenant')
@@ -11,12 +11,14 @@ export class TenantController {
 
   @Get('/page', { summary: '租户分页' })
   async page(
-    @Query('companyName') companyName: string,
-    @Query('isPremium', [ParseBoolPipe]) isPremium: boolean,
-    @Query('pageNo', [ParseIntPipe]) pageNo: number,
-    @Query('pageSize', [ParseIntPipe]) pageSize: number
+    @Query('page', [ParseIntPipe]) page: number = 1,
+    @Query('pageSize', [ParseIntPipe]) pageSize: number = 10,
+    @Query('companyName') companyName?: string,
+    @Query('isPremium') isPremium?: boolean
   ): Promise<IPage> {
-    return await this.tenantService.queryTenantPage({ pageNo, pageSize }, companyName, isPremium)
+    // 移除 ParseBoolPipe 并设置默认值,避免参数不传时的验证错误
+    const premium = isPremium === undefined ? undefined : Boolean(isPremium)
+    return await this.tenantService.queryTenantPage({ page, pageSize }, companyName, premium)
   }
 
   @Get('/:id', { summary: '租户详情' })

@@ -13,9 +13,9 @@ export class TenantService {
 
   // * 查询租户分页
   async queryTenantPage(pageParam: IPage, companyName: string, isPremium: boolean): Promise<IPage<TenantEntity>> {
-    const { pageNo, pageSize } = pageParam
+    const { page, pageSize } = pageParam
 
-    const pageObj = convertPageParam(pageNo, pageSize)
+    const pageObj = convertPageParam(page, pageSize)
     const [records, total] = await this.tenantModel.findAndCount({
       where: {
         companyName: companyName ? Like(`%${companyName}%`) : undefined,

@@ -12,8 +12,8 @@ export class OperLogService {
 
   // * 查询日志分页
   async queryOperLogPage(pageParam: IPage, operName: string): Promise<IPage<OperLogEntity>> {
-    const { pageNo, pageSize } = pageParam
-    const pageObj = convertPageParam(pageNo, pageSize)
+    const { page, pageSize } = pageParam
+    const pageObj = convertPageParam(page, pageSize)
 
     const [records, total] = await this.operLogModel.findAndCount({
       where: {

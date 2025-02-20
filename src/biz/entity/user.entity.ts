@@ -1,8 +1,9 @@
-import { Column, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { BaseEntity } from '../../common/core/base.entity'
 import { TenantEntity } from './tenant.entity'
 import { PermEntity } from './perm.entity'
 
+@Entity('user')
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ unsigned: true, comment: '主键' })
   id: number

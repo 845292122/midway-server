@@ -2,17 +2,17 @@ import { CustomStrategy, PassportStrategy } from '@midwayjs/passport'
 import { Strategy, IStrategyOptions } from 'passport-local'
 import { Repository } from 'typeorm'
 import { InjectEntityModel } from '@midwayjs/typeorm'
-import { Account } from '../../biz/entity/account.entity'
 import * as bcrypt from 'bcrypt'
+import { UserEntity } from '../../biz/entity/user.entity'
 
 @CustomStrategy()
 export class LocalStrategy extends PassportStrategy(Strategy) {
-  @InjectEntityModel(Account)
-  accountModel: Repository<Account>
+  @InjectEntityModel(UserEntity)
+  userModel: Repository<UserEntity>
 
   // 策略的验证
   async validate(username, password) {
-    const user = await this.accountModel.findOneBy({ phone: username })
+    const user = await this.userModel.findOneBy({ username })
     if (!user) {
       throw new Error('用户不存在 ' + username)
     }

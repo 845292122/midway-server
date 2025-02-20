@@ -19,8 +19,8 @@ export class UserService {
     nickname: string,
     status: number
   ): Promise<IPage<UserEntity>> {
-    const { pageNo, pageSize } = pageParam
-    const pageObj = convertPageParam(pageNo, pageSize)
+    const { page, pageSize } = pageParam
+    const pageObj = convertPageParam(page, pageSize)
 
     const [records, total] = await this.userModel.findAndCount({
       where: {
