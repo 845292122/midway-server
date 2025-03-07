@@ -1,31 +1,30 @@
 import { Provide } from '@midwayjs/core'
-import { Like, Repository } from 'typeorm'
-import { TenantEntity } from '../entity/tenant.entity'
-import { InjectEntityModel } from '@midwayjs/typeorm'
 import { IPage } from '../../common/core/interface'
 import { convertPageParam } from '../../common/utils'
 import { TenantDTO } from '../dto/tenant.dto'
+import { prisma } from '../../prisma'
+import { Prisma } from '@prisma/client'
 
 @Provide()
 export class TenantService {
-  @InjectEntityModel(TenantEntity)
-  tenantModel: Repository<TenantEntity>
-
   // * 查询租户分页
-  async queryTenantPage(pageParam: IPage, companyName: string, isPremium: boolean): Promise<IPage<TenantEntity>> {
-    const { page, pageSize } = pageParam
+  async queryTenantPage({ page, pageSize }: IPage, companyName: string, isPremium: number): Promise<IPage<TenantDTO>> {
+    const condition: Prisma.TenantWhereInput = {
+      companyName: companyName ? { startsWith: companyName } : undefined,
+      isPremium,
+      delFlag: 0
+    }
 
-    const pageObj = convertPageParam(page, pageSize)
-    const [records, total] = await this.tenantModel.findAndCount({
-      where: {
-        companyName: companyName ? Like(`%${companyName}%`) : undefined,
-        isPremium
-      },
-      ...pageObj
-    })
-
+    const [total, records] = await Promise.all([
+      prisma.tenant.count({ where: condition }),
+      prisma.tenant.findMany({
+        where: condition,
+        ...convertPageParam(page, pageSize)
+      })
+    ])
     return {
-      ...pageParam,
+      page,
+      pageSize,
       total,
       records
     }
@@ -33,21 +32,31 @@ export class TenantService {
 
   // * 查询租户信息
   async queryTenantInfo(id: number): Promise<TenantDTO> {
-    return await this.tenantModel.findOneBy({ id })
+    return await prisma.tenant.findUnique({ where: { id, delFlag: 0 } })
   }
 
   // * 创建租户
   async createTenant(tenant: TenantDTO) {
-    await this.tenantModel.insert(tenant)
+    await prisma.tenant.create({
+      data: tenant
+    })
   }
 
   // * 更新租户
   async modifyTenant(tenant: TenantDTO) {
-    await this.tenantModel.update(tenant.id, tenant)
+    await prisma.tenant.update({
+      where: { id: tenant.id },
+      data: tenant
+    })
   }
 
   // * 删除租户
   async removeTenant(id: number) {
-    await this.tenantModel.softDelete(id)
+    await prisma.tenant.update({
+      where: { id, delFlag: 0 },
+      data: {
+        delFlag: 1
+      }
+    })
   }
 }

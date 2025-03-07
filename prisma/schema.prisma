@@ -1,0 +1,109 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// 常用命令
+// rm -rf prisma/migrations 删除旧的迁移文件
+// npx prisma migrate reset 重新迁移
+// npx prisma init 初始化prisma
+// npx prisma format 格式化schema
+// npx prisma migrate dev --name init 初始化数据库
+// npx prisma generate  重新生成Prisma Client
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// 租户表
+model Tenant {
+  id             Int       @id @default(autoincrement()) @db.UnsignedInt // 主键
+  contactName    String?   @db.VarChar(30) // 联系人
+  contactPhone   String?   @db.VarChar(20) // 联系电话
+  companyName    String?   @db.VarChar(50) //公司名称
+  licenseNumber  String?   @db.VarChar(50) //统一社会信用代码
+  address        String?   @db.VarChar(255) //地址
+  domain         String?   @db.VarChar(255) //域名
+  remark         String?   @db.VarChar(255) //备注
+  userCount      Int?      @db.TinyInt //用户数量,最大127,-1为无限制
+  trialStartDate DateTime? @db.DateTime // 试用开始时间
+  trialEndDate   DateTime? @db.DateTime //试用结束时间
+  startDate      DateTime? @db.DateTime //开始时间
+  endDate        DateTime? @db.DateTime //结束时间
+  status         Int?      @default(0) @db.TinyInt //状态 0: 未使用; 1: 试用中; 2: 试用结束; 3:正在使用; 4:到期;
+  isPremium      Int?      @default(0) @db.TinyInt() //是否是VIP
+  delFlag        Int       @default(0) @db.TinyInt //逻辑删除 1代表删除
+  createdAt      DateTime  @default(dbgenerated("NOW()")) @db.Timestamp //创建时间
+  updatedAt      DateTime  @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.Timestamp //最后更新时间
+  User           User[]
+  Perm           Perm[]
+
+  @@index([contactName, companyName, delFlag])
+  @@map("tenant")
+}
+
+/// 用户表
+model User {
+  id              Int       @id @default(autoincrement()) @db.UnsignedInt //主键
+  username        String?   @db.VarChar(50) //用户名
+  password        String?   @db.VarChar(255) //密码
+  nickname        String?   @db.VarChar(100) //昵称
+  isPlatformAdmin Int?      @default(0) @db.TinyInt //是否平台管理员, 1: 是; 0: 否
+  isMaster        Int?      @default(0) @db.TinyInt //是否主账号 1: 是; 0: 否
+  dataScope       Int?      @db.TinyInt //数据权限 1: 全部数据权限 2: 本人数据权限 3: 自定义数据权限
+  email           String?   @db.VarChar(50) //邮箱
+  phone           String?   @db.VarChar(20) //  手机号
+  avatar          String?   @db.VarChar(255) //头像
+  status          Int?      @default(1) @db.TinyInt //状态 1: 正常; 2: 禁用
+  loginIP         String?   @db.VarChar(255) //最后登录IP
+  loginDate       DateTime? @db.Timestamp() //最后登录日期
+  remark          String?   @db.VarChar(500) //备注
+  delFlag         Int       @default(0) @db.TinyInt //逻辑删除
+  createdAt       DateTime  @default(dbgenerated("NOW()")) @db.Timestamp //创建时间
+  updatedAt       DateTime  @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.Timestamp //最后更新时间
+  tenantID        Int       @db.UnsignedInt //租户关联ID
+  tenant          Tenant    @relation(fields: [tenantID], references: [id])
+  Perm            Perm[]
+
+  @@index([username, nickname, isPlatformAdmin, isMaster, status])
+  @@map("user")
+}
+
+/// 权限表
+model Perm {
+  id        Int      @id @default(autoincrement()) @db.UnsignedInt //主键
+  ownerId   Int?     @db.UnsignedInt //租户或用户的 ID
+  ownerType Int?     @db.TinyInt //权限类型 1: 租户 2: 用户
+  perm      String?  @db.VarChar(100) //权限
+  createdAt DateTime @default(dbgenerated("NOW()")) @db.Timestamp //创建时间
+  updatedAt DateTime @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.Timestamp //最后更新时间
+  tenant    Tenant?  @relation(fields: [ownerId], references: [id], map: "Tenant_Permissions_FK")
+  user      User?    @relation(fields: [ownerId], references: [id], map: "User_Permissions_FK")
+
+  @@index([ownerId, ownerType])
+  @@map("perm")
+}
+
+/// 操作日志
+model OperLog {
+  id         Int      @id @default(autoincrement()) //主键
+  tenantID   Int?     @db.UnsignedInt //租户ID
+  userID     Int?     @db.UnsignedInt //用户ID
+  type       Int?     @default(0) //业务类型
+  method     String? //执行方法
+  operName   String? //操作人
+  operParam  String?  @db.Text //操作参数
+  operResult String?  @db.Text //操作结果
+  status     Int?     @db.TinyInt //状态
+  errorMsg   String?  @db.Text //错误信息
+  operTime   DateTime @default(dbgenerated("NOW()")) @db.Timestamp //请求时间
+  costTime   BigInt   @db.UnsignedBigInt //请求消耗时间
+
+  @@index([tenantID, userID, type, operName])
+  @@map("log")
+}

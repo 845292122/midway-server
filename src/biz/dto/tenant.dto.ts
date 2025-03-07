@@ -11,7 +11,6 @@ export class TenantDTO {
   companyName: string
   licenseNumber: string
   address: string
-  intro: string
   domain: string
   remark: string
   userCount: number
@@ -20,5 +19,5 @@ export class TenantDTO {
   startDate: Date
   endDate: Date
   status: number
-  isPremium: boolean
+  isPremium: number
 }

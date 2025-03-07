@@ -1,18 +1,13 @@
 import { CustomStrategy, PassportStrategy } from '@midwayjs/passport'
 import { Strategy, IStrategyOptions } from 'passport-local'
-import { Repository } from 'typeorm'
-import { InjectEntityModel } from '@midwayjs/typeorm'
 import * as bcrypt from 'bcrypt'
-import { UserEntity } from '../../biz/entity/user.entity'
+import { prisma } from '../../prisma'
 
 @CustomStrategy()
 export class LocalStrategy extends PassportStrategy(Strategy) {
-  @InjectEntityModel(UserEntity)
-  userModel: Repository<UserEntity>
-
   // 策略的验证
   async validate(username, password) {
-    const user = await this.userModel.findOneBy({ username })
+    const user = await prisma.user.findFirst({ where: { delFlag: 0, username } })
     if (!user) {
       throw new Error('用户不存在 ' + username)
     }

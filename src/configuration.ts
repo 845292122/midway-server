@@ -2,7 +2,6 @@ import { join } from 'path'
 import * as koa from '@midwayjs/koa'
 import * as validate from '@midwayjs/validate'
 import * as info from '@midwayjs/info'
-import * as orm from '@midwayjs/typeorm'
 import * as jwt from '@midwayjs/jwt'
 import * as passport from '@midwayjs/passport'
 import * as cron from '@midwayjs/cron'
@@ -17,7 +16,6 @@ import { ResultMiddleware } from './common/middleware/result.middleware'
   imports: [
     koa,
     jwt,
-    orm,
     validate,
     passport,
     cron,

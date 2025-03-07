@@ -14,11 +14,9 @@ export class TenantController {
     @Query('page', [ParseIntPipe]) page: number = 1,
     @Query('pageSize', [ParseIntPipe]) pageSize: number = 10,
     @Query('companyName') companyName?: string,
-    @Query('isPremium') isPremium?: boolean
+    @Query('isPremium', [ParseIntPipe]) isPremium?: number
   ): Promise<IPage> {
-    // 移除 ParseBoolPipe 并设置默认值,避免参数不传时的验证错误
-    const premium = isPremium === undefined ? undefined : Boolean(isPremium)
-    return await this.tenantService.queryTenantPage({ page, pageSize }, companyName, premium)
+    return await this.tenantService.queryTenantPage({ page, pageSize }, companyName, isPremium)
   }
 
   @Get('/:id', { summary: '租户详情' })
