@@ -14,9 +14,9 @@ export class TenantController {
     @Query('page', [ParseIntPipe]) page: number = 1,
     @Query('pageSize', [ParseIntPipe]) pageSize: number = 10,
     @Query('companyName') companyName?: string,
-    @Query('isPremium', [ParseIntPipe]) isPremium?: number
+    @Query('isPremium') isPremium?: number
   ): Promise<IPage> {
-    return await this.tenantService.queryTenantPage({ page, pageSize }, companyName, isPremium)
+    return await this.tenantService.queryTenantPage({ page, pageSize }, companyName, Number(isPremium))
   }
 
   @Get('/:id', { summary: '租户详情' })
@@ -38,4 +38,6 @@ export class TenantController {
   async remove(@Param('id', [ParseIntPipe]) id: number) {
     await this.tenantService.removeTenant(id)
   }
+
+  // TODO list接口
 }

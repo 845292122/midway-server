@@ -11,7 +11,7 @@ export class TenantService {
   async queryTenantPage({ page, pageSize }: IPage, companyName: string, isPremium: number): Promise<IPage<TenantDTO>> {
     const condition: Prisma.TenantWhereInput = {
       companyName: companyName ? { startsWith: companyName } : undefined,
-      isPremium,
+      isPremium: Number(isPremium),
       delFlag: 0
     }
 

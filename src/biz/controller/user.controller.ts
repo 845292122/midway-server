@@ -11,11 +11,11 @@ export class UserController {
 
   @Get('/page', { summary: '用户分页' })
   async page(
-    @Query('username') username: string,
-    @Query('nickname') nickname: string,
-    @Query('status', [ParseIntPipe]) status: number,
-    @Query('page', [ParseIntPipe]) page: number,
-    @Query('pageSize', [ParseIntPipe]) pageSize: number
+    @Query('username') username?: string,
+    @Query('nickname') nickname?: string,
+    @Query('status') status?: number,
+    @Query('page', [ParseIntPipe]) page: number = 1,
+    @Query('pageSize', [ParseIntPipe]) pageSize: number = 10
   ): Promise<IPage> {
     return await this.userService.queryUserPage({ page, pageSize }, username, nickname, status)
   }

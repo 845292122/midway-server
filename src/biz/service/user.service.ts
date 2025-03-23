@@ -19,7 +19,7 @@ export class UserService {
       delFlag: 0,
       username: username ? { startsWith: username } : undefined,
       nickname: nickname ? { startsWith: nickname } : undefined,
-      status
+      status: status ? Number(status) : undefined
     }
 
     const [total, records] = await Promise.all([
