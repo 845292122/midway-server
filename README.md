@@ -2,6 +2,10 @@
 
 基于 midway.js 开发的后台服务, 内置 saas 权限管理
 
+## FE
+
+https://github.com/845292122/ant-admin
+
 ## 项目介绍
 
 #### 权限设计:
