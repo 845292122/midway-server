@@ -12,11 +12,13 @@ export class TenantService {
     { page, pageSize }: IPage,
     contactName: string,
     companyName: string,
+    status: number,
     isPremium: number
   ): Promise<IPage<TenantDTO>> {
     const condition: Prisma.TenantWhereInput = {
       companyName: companyName ? { startsWith: companyName } : undefined,
       contactName: contactName ? { startsWith: contactName } : undefined,
+      status: status ?? undefined,
       isPremium,
       delFlag: 0
     }
