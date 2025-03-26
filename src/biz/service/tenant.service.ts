@@ -8,10 +8,16 @@ import { Prisma } from '@prisma/client'
 @Provide()
 export class TenantService {
   // * 查询租户分页
-  async queryTenantPage({ page, pageSize }: IPage, companyName: string, isPremium: number): Promise<IPage<TenantDTO>> {
+  async queryTenantPage(
+    { page, pageSize }: IPage,
+    contactName: string,
+    companyName: string,
+    isPremium: number
+  ): Promise<IPage<TenantDTO>> {
     const condition: Prisma.TenantWhereInput = {
       companyName: companyName ? { startsWith: companyName } : undefined,
-      isPremium: Number(isPremium),
+      contactName: contactName ? { startsWith: contactName } : undefined,
+      isPremium,
       delFlag: 0
     }
 

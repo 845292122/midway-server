@@ -13,10 +13,14 @@ export class TenantController {
   async page(
     @Query('page', [ParseIntPipe]) page: number = 1,
     @Query('pageSize', [ParseIntPipe]) pageSize: number = 10,
+    @Query('contactName') contactName?: string,
     @Query('companyName') companyName?: string,
     @Query('isPremium') isPremium?: number
   ): Promise<IPage> {
-    return await this.tenantService.queryTenantPage({ page, pageSize }, companyName, Number(isPremium))
+    if (isPremium) {
+      isPremium = Number(isPremium)
+    }
+    return await this.tenantService.queryTenantPage({ page, pageSize }, contactName, companyName, isPremium)
   }
 
   @Get('/:id', { summary: '租户详情' })
