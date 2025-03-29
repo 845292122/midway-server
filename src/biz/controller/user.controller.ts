@@ -27,6 +27,7 @@ export class UserController {
   @Post('/create', { summary: '创建用户' })
   async create(@Body() user: UserDTO) {
     await this.userService.verifyPhoneUnique(user)
+    await this.userService.verifyUserCount(user.tenantID)
     await this.userService.createUser(user)
   }
 

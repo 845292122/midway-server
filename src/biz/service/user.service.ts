@@ -13,7 +13,7 @@ export class UserService {
     const condition: Prisma.UserWhereInput = {
       delFlag: 0,
       nickname: nickname ? { startsWith: nickname } : undefined,
-      status: status ? Number(status) : undefined
+      status: status !== undefined ? Number(status) : undefined
     }
 
     const [total, records] = await Promise.all([
@@ -78,5 +78,27 @@ export class UserService {
     })
 
     if (res) throw new BizError('用户名已经存在')
+  }
+
+  async verifyUserCount(tenantID: number) {
+    const tenantInfo = await prisma.tenant.findUnique({
+      where: {
+        id: tenantID,
+        delFlag: 0,
+        status: {
+          in: [1, 3]
+        }
+      }
+    })
+    if (!tenantInfo) throw new BizError('租户不存在或已失效')
+
+    const existUserCount = await prisma.user.count({
+      where: {
+        tenantID,
+        delFlag: 0
+      }
+    })
+
+    if (existUserCount >= tenantInfo.userCount) throw new BizError('租户用户数量已达上限')
   }
 }
