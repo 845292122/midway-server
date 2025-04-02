@@ -67,4 +67,18 @@ export class TenantService {
       }
     })
   }
+
+  // * 查询租户列表
+  async queryTenantList() {
+    return await prisma.tenant.findMany({
+      where: {
+        delFlag: 0
+      },
+      select: {
+        id: true,
+        companyName: true,
+        isPremium: true
+      }
+    })
+  }
 }

@@ -9,15 +9,9 @@ import { Prisma } from '@prisma/client'
 @Provide()
 export class UserService {
   // * 查询用户分页
-  async queryUserPage(
-    { page, pageSize }: IPage,
-    username: string,
-    nickname: string,
-    status: number
-  ): Promise<IPage<UserDTO>> {
+  async queryUserPage({ page, pageSize }: IPage, nickname: string, status: number): Promise<IPage<UserDTO>> {
     const condition: Prisma.UserWhereInput = {
       delFlag: 0,
-      username: username ? { startsWith: username } : undefined,
       nickname: nickname ? { startsWith: nickname } : undefined,
       status: status ? Number(status) : undefined
     }
@@ -70,26 +64,6 @@ export class UserService {
   async verifyPhoneUnique(user: UserDTO) {
     const condition: Prisma.UserWhereInput = {
       phone: user.phone,
-      delFlag: 0
-    }
-
-    if (user.id) {
-      condition.id = {
-        not: user.id
-      }
-    }
-
-    const res = await prisma.user.findFirst({
-      where: condition
-    })
-
-    if (res) throw new BizError('用户名已经存在')
-  }
-
-  // * 验证用户名是否唯一
-  async verifyNameNameUnique(user: UserDTO) {
-    const condition: Prisma.UserWhereInput = {
-      username: user.username,
       delFlag: 0
     }
 

@@ -44,5 +44,8 @@ export class TenantController {
     await this.tenantService.removeTenant(id)
   }
 
-  // TODO list接口
+  @Get('/list', { summary: '租户列表' })
+  async list() {
+    return await this.tenantService.queryTenantList()
+  }
 }

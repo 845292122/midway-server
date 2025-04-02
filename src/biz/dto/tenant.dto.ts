@@ -3,7 +3,7 @@ import { BizError } from '../../common/core/error'
 
 export class TenantDTO {
   @Rule(RuleType.number().optional())
-  id: number
+  id?: number
   @Rule(RuleType.string().required().error(new BizError('请输入联系人姓名')))
   contactName: string
   @Rule(RuleType.string().required().error(new BizError('请输入联系人手机号')))

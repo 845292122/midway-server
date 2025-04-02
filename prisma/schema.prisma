@@ -11,6 +11,8 @@
 // npx prisma format 格式化schema
 // npx prisma migrate dev --name init 初始化数据库
 // npx prisma generate  重新生成Prisma Client
+// npx prisma db push 同步数据库，不会删除数据
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -41,7 +43,6 @@ model Tenant {
   createdAt      DateTime  @default(dbgenerated("NOW()")) @db.Timestamp //创建时间
   updatedAt      DateTime  @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.Timestamp //最后更新时间
   User           User[]
-  Perm           Perm[]
 
   @@index([contactName, companyName, delFlag])
   @@map("tenant")
@@ -50,14 +51,13 @@ model Tenant {
 /// 用户表
 model User {
   id              Int       @id @default(autoincrement()) @db.UnsignedInt //主键
-  username        String?   @db.VarChar(50) //用户名
+  phone           String?   @db.VarChar(20) //  手机号
   password        String?   @db.VarChar(255) //密码
   nickname        String?   @db.VarChar(100) //昵称
   isPlatformAdmin Int?      @default(0) @db.TinyInt //是否平台管理员, 1: 是; 0: 否
   isMaster        Int?      @default(0) @db.TinyInt //是否主账号 1: 是; 0: 否
   dataScope       Int?      @db.TinyInt //数据权限 1: 全部数据权限 2: 本人数据权限 3: 自定义数据权限
   email           String?   @db.VarChar(50) //邮箱
-  phone           String?   @db.VarChar(20) //  手机号
   avatar          String?   @db.VarChar(255) //头像
   status          Int?      @default(1) @db.TinyInt //状态 1: 正常; 2: 禁用
   loginIP         String?   @db.VarChar(255) //最后登录IP
@@ -66,11 +66,10 @@ model User {
   delFlag         Int       @default(0) @db.TinyInt //逻辑删除
   createdAt       DateTime  @default(dbgenerated("NOW()")) @db.Timestamp //创建时间
   updatedAt       DateTime  @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.Timestamp //最后更新时间
-  tenantID        Int       @db.UnsignedInt //租户关联ID
-  tenant          Tenant    @relation(fields: [tenantID], references: [id])
-  Perm            Perm[]
+  tenantID        Int?      @db.UnsignedInt //租户关联ID
+  tenant          Tenant?   @relation(fields: [tenantID], references: [id])
 
-  @@index([username, nickname, isPlatformAdmin, isMaster, status])
+  @@index([phone, nickname, isPlatformAdmin, isMaster, status])
   @@map("user")
 }
 
@@ -79,12 +78,11 @@ model Perm {
   id        Int      @id @default(autoincrement()) @db.UnsignedInt //主键
   ownerId   Int?     @db.UnsignedInt //租户或用户的 ID
   ownerType Int?     @db.TinyInt //权限类型 1: 租户 2: 用户
-  perm      String?  @db.VarChar(100) //权限
+  perms     Json?    @db.Json //权限
   createdAt DateTime @default(dbgenerated("NOW()")) @db.Timestamp //创建时间
   updatedAt DateTime @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.Timestamp //最后更新时间
-  tenant    Tenant?  @relation(fields: [ownerId], references: [id], map: "Tenant_Permissions_FK")
-  user      User?    @relation(fields: [ownerId], references: [id], map: "User_Permissions_FK")
 
+  @@unique([ownerId, ownerType])
   @@index([ownerId, ownerType])
   @@map("perm")
 }
