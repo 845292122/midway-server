@@ -14,8 +14,13 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     if (!(await bcrypt.compare(password, user.password))) {
       throw new Error('密码错误 ' + phone)
     }
+    if (user.status === 0) {
+      throw new Error('用户被禁用 ' + user.nickname)
+    }
 
-    return user
+    return {
+      id: user.id
+    }
   }
 
   // 当前策略的构造器参数

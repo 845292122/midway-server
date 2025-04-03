@@ -18,5 +18,8 @@ export default {
         store: 'memory'
       }
     }
+  },
+  passport: {
+    session: false
   }
 } as MidwayConfig

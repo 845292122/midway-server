@@ -5,6 +5,8 @@ import { UserDTO } from '../dto/user.dto'
 import { BizError } from '../../common/core/error'
 import { prisma } from '../../prisma'
 import { Prisma } from '@prisma/client'
+import * as bcrypt from 'bcrypt'
+import { Constant } from '../../common/core/constant'
 
 @Provide()
 export class UserService {
@@ -36,11 +38,26 @@ export class UserService {
 
   // * 查询用户详情
   async queryUserInfo(id: number): Promise<UserDTO> {
-    return await prisma.user.findUnique({ where: { id, delFlag: 0 } })
+    return await prisma.user.findUnique({
+      where: { id, delFlag: 0 },
+      select: {
+        id: true,
+        tenantID: true,
+        username: true,
+        nickname: true,
+        email: true,
+        dataScope: true,
+        phone: true,
+        status: true,
+        isMaster: true,
+        isPlatformAdmin: true
+      }
+    })
   }
 
   // * 创建用户
   async createUser(user: UserDTO) {
+    user.password = await bcrypt.hash(Constant.INIT_PWD)
     return await prisma.user.create({ data: user })
   }
 

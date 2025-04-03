@@ -3,13 +3,13 @@ import { BizError } from '../../common/core/error'
 
 export class UserDTO {
   @Rule(RuleType.number().optional().empty(null))
-  id?: number
+  id: number
 
   @Rule(RuleType.number().required().error(new BizError('租户ID不能为空')))
   tenantID: number
 
   @Rule(RuleType.string().optional().empty(null))
-  password: string
+  password?: string
 
   @Rule(RuleType.string().required().error(new BizError('手机号不能为空')))
   phone?: string
