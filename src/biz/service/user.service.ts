@@ -43,7 +43,6 @@ export class UserService {
       select: {
         id: true,
         tenantID: true,
-        username: true,
         nickname: true,
         email: true,
         dataScope: true,

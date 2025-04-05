@@ -53,7 +53,7 @@ model User {
   id              Int       @id @default(autoincrement()) @db.UnsignedInt //主键
   phone           String?   @db.VarChar(20) //  手机号
   password        String?   @db.VarChar(255) //密码
-  nickname        String?   @db.VarChar(100) //昵称
+  nickname        String?   @db.VarChar(100) //昵称（联系人）
   isPlatformAdmin Int?      @default(0) @db.TinyInt //是否平台管理员, 1: 是; 0: 否
   isMaster        Int?      @default(0) @db.TinyInt //是否主账号 1: 是; 0: 否
   dataScope       Int?      @db.TinyInt //数据权限 1: 全部数据权限 2: 本人数据权限 3: 自定义数据权限
