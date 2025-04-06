@@ -56,7 +56,7 @@ export class UserService {
 
   // * 创建用户
   async createUser(user: UserDTO) {
-    user.password = await bcrypt.hash(Constant.INIT_PWD)
+    user.password = await bcrypt.hash(Constant.Auth.INIT_PWD)
     return await prisma.user.create({ data: user })
   }
 

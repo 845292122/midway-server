@@ -1,9 +1,16 @@
+import { Rule, RuleType } from '@midwayjs/validate'
+import { BizError } from '../../common/core/error'
+
 export class PermDTO {
-  id: number
+  @Rule(RuleType.number().optional())
+  id?: number
+
+  @Rule(RuleType.number().optional())
   ownerId: number
-  ownerType: number
-  perm: string
-  key: string
-  createdAt: Date
-  updatedAt: Date
+
+  @Rule(RuleType.number().required().error(new BizError('ownerType不能为空')))
+  ownerType?: number
+
+  @Rule(RuleType.array().items(RuleType.string()).required().error(new BizError('perm不能为空')))
+  perm: string[]
 }
