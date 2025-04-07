@@ -6,13 +6,13 @@ export class UserDTO {
   id: number
 
   @Rule(RuleType.number().required().error(new BizError('租户ID不能为空')))
-  tenantID: number
+  tenantID?: number
 
   @Rule(RuleType.string().optional().empty(null))
   password?: string
 
   @Rule(RuleType.string().required().error(new BizError('手机号不能为空')))
-  phone?: string
+  phone: string
 
   @Rule(RuleType.string().required().error(new BizError('昵称不能为空')))
   nickname: string
