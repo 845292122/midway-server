@@ -1,5 +1,3 @@
-// src/middleware/local.middleware.ts
-
 import { Middleware } from '@midwayjs/core'
 import { PassportMiddleware, AuthenticateOptions } from '@midwayjs/passport'
 import { LocalStrategy } from '../strategy/local.strategy'
