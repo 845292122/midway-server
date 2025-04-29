@@ -3,9 +3,7 @@ import { LocalPassportMiddleware } from '../../common/middleware/local.middlewar
 import { Context } from '@midwayjs/koa'
 import { AuthService } from '../service/auth.service'
 import { JwtPassportMiddleware } from '../../common/middleware/jwt.middleware'
-import { UserService } from '../service/user.service'
-import { PermService } from '../service/perm.service'
-import { Constant } from '../../common/core/constant'
+import { AccountService } from '../service/account.service'
 
 @Controller('/auth')
 export class AuthController {
@@ -16,10 +14,7 @@ export class AuthController {
   authService: AuthService
 
   @Inject()
-  userService: UserService
-
-  @Inject()
-  permService: PermService
+  accountService: AccountService
 
   @Post('/login', { middleware: [LocalPassportMiddleware] })
   async login() {
@@ -29,13 +24,7 @@ export class AuthController {
   @Get('/info', { middleware: [JwtPassportMiddleware] })
   async getAuthInfo() {
     const { id } = this.ctx.state.user
-    const userInfo = await this.userService.queryUserInfo(id)
-    return userInfo
-  }
-
-  @Get('/permission', { middleware: [JwtPassportMiddleware] })
-  async getAuthPermission() {
-    const { id } = this.ctx.state.user
-    return await this.permService.getPerms(id, Constant.Perm.OWNER_TYPE.USER)
+    const accountInfo = await this.accountService.queryAccountInfo(id)
+    return accountInfo
   }
 }
