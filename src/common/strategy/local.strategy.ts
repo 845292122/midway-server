@@ -12,22 +12,23 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
   // 策略的验证
   async validate(phone, password) {
-    const user = await prisma.user.findFirst({ where: { delFlag: 0, phone } })
-    if (!user) {
+    const account = await prisma.account.findFirst({ where: { delFlag: 0, phone } })
+
+    if (!account) {
       this.logger.warn('账号不存在')
       throw new Error('账号或密码不正确' + phone)
     }
-    if (!(await bcrypt.compare(password, user.password))) {
+    if (!(await bcrypt.compare(password, account.password))) {
       this.logger.warn('密码不正确')
       throw new Error('账号或密码不正确')
     }
-    if (user.status === 0) {
-      this.logger.warn('用户被禁用 ' + user.nickname)
-      throw new Error('用户被禁用 ' + user.nickname)
+    if (account.status === 0) {
+      this.logger.warn('用户被禁用 ' + account.phone)
+      throw new Error('用户被禁用 ' + account.phone)
     }
 
     return {
-      id: user.id
+      id: account.id
     }
   }
 
