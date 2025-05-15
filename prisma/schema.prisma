@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// 常用命令
+// rm -rf prisma/migrations 删除旧的迁移文件
+// npx prisma migrate reset 重新迁移
+// npx prisma init 初始化prisma
+// npx prisma format 格式化schema
+// npx prisma migrate dev --name init 初始化数据库
+// npx prisma generate  重新生成Prisma Client
+// npx prisma db push 同步数据库，不会删除数据
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// 账户表
+model Account {
+  id              Int       @id @default(autoincrement()) @db.UnsignedInt //主键
+  phone           String?   @db.VarChar(20) //  手机号
+  password        String?   @db.VarChar(255) //密码
+  contact         String?   @db.VarChar(100) //联系人
+  storeName       String?   @db.VarChar(50) //店铺名称
+  licenseNumber   String?   @db.VarChar(50) //统一社会信用代码
+  address         String?   @db.VarChar(255) //地址
+  domain          String?   @db.VarChar(255) //域名
+  isPlatformAdmin Int?      @default(0) @db.TinyInt //是否平台管理员, 1: 是; 0: 否
+  email           String?   @db.VarChar(50) //邮箱
+  status          Int?      @default(1) @db.TinyInt //状态 0: 未使用; 1: 试用中; 2: 试用结束; 3:正在使用; 4:到期;
+  trialStartDate  DateTime? @db.DateTime // 试用开始时间
+  trialEndDate    DateTime? @db.DateTime //试用结束时间
+  startDate       DateTime? @db.DateTime //开始时间
+  endDate         DateTime? @db.DateTime //结束时间
+  loginIP         String?   @db.VarChar(255) //最后登录IP
+  loginDate       DateTime? @db.Timestamp() //最后登录日期
+  remark          String?   @db.VarChar(500) //备注
+  isPremium       Int?      @default(0) @db.TinyInt //是否Premium, 1: 是; 0: 否
+  delFlag         Int       @default(0) @db.TinyInt //逻辑删除
+  createdAt       DateTime  @default(dbgenerated("NOW()")) @db.Timestamp //创建时间
+  updatedAt       DateTime  @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.Timestamp //最后更新时间
+
+  @@index([phone, contact, isPlatformAdmin, status])
+  @@map("account")
+}

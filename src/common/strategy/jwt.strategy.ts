@@ -1,22 +1,26 @@
 import { CustomStrategy, PassportStrategy } from '@midwayjs/passport'
 import { Strategy, ExtractJwt, StrategyOptions } from 'passport-jwt'
 import { Config } from '@midwayjs/core'
+import { UnauthorizedError } from '../core/error'
 
 @CustomStrategy()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   @Config('jwt')
   jwtConfig
 
-  async validate(payload) {
-    // TODO jwt验证
+  async validate(req, payload) {
+    const { ip } = payload
+    if (ip !== req.ip) {
+      throw new UnauthorizedError('无效的Token')
+    }
     return payload
   }
 
   getStrategyOptions(): StrategyOptions {
     return {
       secretOrKey: this.jwtConfig.secret,
-      passReqToCallback: true,
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      passReqToCallback: true
     }
   }
 }

@@ -2,6 +2,10 @@
 
 基于 midway.js 开发的后台服务, 内置 saas 权限管理
 
+## FE
+
+https://github.com/845292122/ant-admin
+
 ## 项目介绍
 
 #### 权限设计:
@@ -14,17 +18,7 @@
 
 - midway.js
 - mysql
-- typeorm
-
-### typeorm
-
-TypeORM 中 save() 和 insert() 的主要区别：
-
-- save: 会自动执行实体的验证和保存操作
-- insert: 不会执行实体的验证操作，只会将数据插入到数据库中
-
-简单场景使用: insert/update/softDelete
-复杂场景使用: save/update/softRemove
+- prisma
 
 ## src 目录说明
 

@@ -19,20 +19,7 @@ export default {
       }
     }
   },
-  typeorm: {
-    dataSource: {
-      default: {
-        type: 'mysql',
-        host: '127.0.0.1',
-        port: 3306,
-        username: 'root',
-        password: '12345678',
-        database: 'fast-saas',
-        // ! 如果第一次使用，不存在表，有同步的需求可以写 true，注意会丢数据
-        synchronize: false,
-        logging: false,
-        entities: ['**/*.entity.{j,t}s']
-      }
-    }
+  passport: {
+    session: false
   }
 } as MidwayConfig
