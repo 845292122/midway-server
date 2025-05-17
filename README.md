@@ -1,18 +1,6 @@
 # Midway Server
 
-基于 midway.js 开发的后台服务, 内置 saas 权限管理
-
-## FE
-
-https://github.com/845292122/ant-admin
-
-## 项目介绍
-
-#### 权限设计:
-
-- 平台管理员可以创建租户和账户, 租户主账号(管理员)可以创建子账户并分配角色和权限
-- 角色可以设置路由权限和数据权限(全部数据 or 本人数据)
-- 租户也可在登录页面自己注册,注册后会自动生成租户数据和主账号数据
+基于 midway.js + prisma 开发的后台服务
 
 ## 技术栈
 
@@ -26,13 +14,11 @@ https://github.com/845292122/ant-admin
   - filter 过滤器目录
   - guard 守卫目录
   - middleware 中间件目录
-  - strategy 策略目录
   - utils 工具目录
-- biz 业务模块目录
-  - controller 控制器目录
-  - entity 数据库实体目录
-  - service 服务目录
-  - dto 数据传输对象目录
+- modules 业务模块目录
+  - controller 控制器
+  - schema 数据校验
+  - service 业务逻辑
 - config 配置目录
 - job 定时任务目录
 
