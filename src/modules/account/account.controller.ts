@@ -1,9 +1,11 @@
-import { Body, Controller, Get, Inject, Param, Post, Query } from '@midwayjs/core'
+import { Body, Controller, Get, Inject, Param, Post, Query, UseGuard } from '@midwayjs/core'
 import { AccountService } from './account.service'
 import { IPage } from '../../common/core/interface'
 import { ParseIntPipe } from '@midwayjs/validate'
 import { AccountDTO } from './account.dto'
+import { AdminGuard } from '../../common/guard/admin.guard'
 
+@UseGuard(AdminGuard)
 @Controller('/account')
 export class AccountController {
   @Inject()

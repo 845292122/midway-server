@@ -1,14 +1,16 @@
-import { Post, Controller, Inject, Get } from '@midwayjs/core'
-import { LocalPassportMiddleware } from '../../common/middleware/local.middleware'
+import { Post, Controller, Inject, Get, Body, Logger, ILogger } from '@midwayjs/core'
 import { Context } from '@midwayjs/koa'
 import { AuthService } from './auth.service'
-import { JwtPassportMiddleware } from '../../common/middleware/jwt.middleware'
 import { AccountService } from '../account/account.service'
+import { LoginInfo } from './auth.schema'
 
 @Controller('/auth')
 export class AuthController {
   @Inject()
   ctx: Context
+
+  @Logger()
+  logger: ILogger
 
   @Inject()
   authService: AuthService
@@ -16,12 +18,12 @@ export class AuthController {
   @Inject()
   accountService: AccountService
 
-  @Post('/login', { middleware: [LocalPassportMiddleware] })
-  async login() {
-    return await this.authService.generateToken(this.ctx.state.user)
+  @Post('/login', { summary: '登录' })
+  async login(@Body() loginInfo: LoginInfo) {
+    return await this.authService.generateToken(loginInfo)
   }
 
-  @Get('/info', { middleware: [JwtPassportMiddleware] })
+  @Get('/info')
   async getAuthInfo() {
     const { id } = this.ctx.state.user
     const accountInfo = await this.accountService.queryAccountInfo(id)

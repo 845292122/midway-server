@@ -16,7 +16,7 @@ export class AdminGuard implements IGuard<Context> {
    * @param methodName
    */
   async canActivate(context: Context, supplierClz, methodName: string): Promise<boolean> {
-    const authInfo = context.state?.authInfo
-    return authInfo?.isa === 1
+    const user = context.state?.user
+    return user.isAdmin === 1
   }
 }

@@ -3,7 +3,6 @@ import * as koa from '@midwayjs/koa'
 import * as validate from '@midwayjs/validate'
 import * as info from '@midwayjs/info'
 import * as jwt from '@midwayjs/jwt'
-import * as passport from '@midwayjs/passport'
 import * as cron from '@midwayjs/cron'
 import * as cacheManager from '@midwayjs/cache-manager'
 import { Configuration, App, ILifeCycle } from '@midwayjs/core'
@@ -11,13 +10,13 @@ import { ReportMiddleware } from './common/middleware/report.middleware'
 import { BizErrorFilter } from './common/filter/biz.filter'
 import { GlobalErrorFilter } from './common/filter/global.filter'
 import { ResultMiddleware } from './common/middleware/result.middleware'
+import { JwtMiddleware } from './common/middleware/jwt.middleware'
 
 @Configuration({
   imports: [
     koa,
     jwt,
     validate,
-    passport,
     cron,
     cacheManager,
     {
@@ -33,7 +32,7 @@ export class MainConfiguration implements ILifeCycle {
 
   async onReady() {
     // add middleware
-    this.app.useMiddleware([ReportMiddleware, ResultMiddleware])
+    this.app.useMiddleware([ReportMiddleware, ResultMiddleware, JwtMiddleware])
     // add filter
     this.app.useFilter([BizErrorFilter, GlobalErrorFilter])
   }
